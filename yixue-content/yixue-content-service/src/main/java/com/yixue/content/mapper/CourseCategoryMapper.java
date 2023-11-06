@@ -1,7 +1,10 @@
 package com.yixue.content.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yixue.content.mode.dto.CourseCategoryTreeDto;
 import com.yixue.content.mode.po.CourseCategory;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,4 +15,5 @@ import com.yixue.content.mode.po.CourseCategory;
  */
 public interface CourseCategoryMapper extends BaseMapper<CourseCategory> {
 
+     List<CourseCategoryTreeDto> selectTreeNode(String id);
 }

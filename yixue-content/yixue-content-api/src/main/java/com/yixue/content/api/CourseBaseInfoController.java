@@ -7,6 +7,7 @@ import com.yixue.content.mode.po.CourseBase;
 import com.yixue.content.service.CourseBaseInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(value = "课程信息编辑接口",tags = "课程信息编辑接口")
 @RestController
+@Slf4j
 @RequestMapping("/course")
 public class CourseBaseInfoController {
 
