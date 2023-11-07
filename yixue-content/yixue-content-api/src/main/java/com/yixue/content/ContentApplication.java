@@ -10,7 +10,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author liy
  * @date 2023/11/5$
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.yixue")
 @EnableSwagger2
 public class ContentApplication {
     public static void main(String[] args) {
