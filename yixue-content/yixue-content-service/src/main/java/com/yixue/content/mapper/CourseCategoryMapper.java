@@ -14,6 +14,11 @@ import java.util.List;
  * @author liy
  */
 public interface CourseCategoryMapper extends BaseMapper<CourseCategory> {
+     /**
+      * @description: 根据课程id查询课程分类的树状结构
 
+      * @return: 课程的树状结果集
+
+      */
      List<CourseCategoryTreeDto> selectTreeNode(String id);
 }

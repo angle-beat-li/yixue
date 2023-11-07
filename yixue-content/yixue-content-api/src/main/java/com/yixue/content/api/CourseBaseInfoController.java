@@ -27,12 +27,24 @@ public class CourseBaseInfoController {
 
     @Autowired
     public CourseBaseInfoService courseBaseInfoService;
+
+    /**
+     * @description: 课程查询接口
+
+     * @return: 课程分页查询结果
+
+     */
     @ApiOperation("课程查询接口")
     @PostMapping("/list")
     public PageResult<CourseBase> list(PageParams pageParams, @RequestBody(required = false) QueryCourseParamsDto queryCourseParamsDto) {
         return courseBaseInfoService.queryCourseBaseList(pageParams,queryCourseParamsDto);
     }
+    /**
+     * @description: 新增课程
 
+     * @return: 课程的基本信息
+
+     */
     @PostMapping
     @ApiOperation("新增课程接口")
     public CourseBaseInfoDto createCourseBase(@RequestBody AddCourseDto addCourseDto){

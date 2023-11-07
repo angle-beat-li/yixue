@@ -27,6 +27,12 @@ public class CourseCategoryController {
 
     @Autowired
     private CourseCategoryService courseCategoryService;
+    /**
+     * @description: 对课程进行分类
+
+     * @return: 课程分类的树状结果
+
+     */
     @ApiOperation("课程分类接口")
     @GetMapping("/tree-nodes")
     public List<CourseCategoryTreeDto> queryTreeNode(){
