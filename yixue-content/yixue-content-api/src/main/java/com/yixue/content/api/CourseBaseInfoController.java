@@ -1,10 +1,7 @@
 package com.yixue.content.api;
 
 import com.yixue.base.mode.PageParams;
-import com.yixue.content.mode.dto.AddCourseDto;
-import com.yixue.content.mode.dto.CourseBaseInfoDto;
-import com.yixue.content.mode.dto.PageResult;
-import com.yixue.content.mode.dto.QueryCourseParamsDto;
+import com.yixue.content.mode.dto.*;
 import com.yixue.content.mode.po.CourseBase;
 import com.yixue.content.service.CourseBaseInfoService;
 import io.swagger.annotations.Api;
@@ -19,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * @author liy
  * @date 2023/11/5$
  */
-@Api(value = "课程信息编辑接口",tags = "课程信息编辑接口")
+@Api(value = "CourseBaseInfoController",tags = "课程信息编辑接口")
 @RestController
 @Slf4j
 @RequestMapping("/course")
@@ -50,5 +47,40 @@ public class CourseBaseInfoController {
     public CourseBaseInfoDto createCourseBase(@RequestBody AddCourseDto addCourseDto){
         CourseBaseInfoDto courseBase = courseBaseInfoService.createCourseBase(1232141425L, addCourseDto);
         return courseBase;
+    }
+    /**
+     * @description: 根据id获取课程信息
+
+     * @return: 课程基本信息
+
+     */
+    @ApiOperation("根据id获得课程")
+    @GetMapping("/{id}")
+    public CourseBaseInfoDto getCourseBaseById(@PathVariable Long id){
+        return courseBaseInfoService.getCourseBaseInfo(id);
+    }
+    /**
+     * @description: 修改课程信息接口
+
+     * @return: 课程基本信息
+
+     */
+    @ApiOperation("修改课程信息")
+    @PutMapping
+    public CourseBaseInfoDto modifyCourseBase(@RequestBody EditCourseDto editCourseDto) {
+        Long companyId = 1232141425L;
+        return courseBaseInfoService.updateCourseBase(companyId,editCourseDto);
+    }
+    /**
+     * @description: 删除课程
+
+     * @return: void
+
+     */
+    @ApiOperation("删除课程信息")
+    @DeleteMapping("/{courseId}")
+    public void deleteCourseBase (@PathVariable Long courseId) {
+        Long compyId = 1232141425L;
+        courseBaseInfoService.deleteCourseBase(compyId,courseId);
     }
 }

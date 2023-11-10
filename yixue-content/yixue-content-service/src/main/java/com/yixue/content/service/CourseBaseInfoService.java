@@ -1,10 +1,7 @@
 package com.yixue.content.service;
 
 import com.yixue.base.mode.PageParams;
-import com.yixue.content.mode.dto.AddCourseDto;
-import com.yixue.content.mode.dto.CourseBaseInfoDto;
-import com.yixue.content.mode.dto.PageResult;
-import com.yixue.content.mode.dto.QueryCourseParamsDto;
+import com.yixue.content.mode.dto.*;
 import com.yixue.content.mode.po.CourseBase;
 
 /**
@@ -30,4 +27,20 @@ public interface CourseBaseInfoService {
 
      */
     CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto addCourseDto);
+    /**
+     * @description: 查询课程信息
+
+     * @return: 课程基本信息
+
+     */
+    CourseBaseInfoDto getCourseBaseInfo(Long id);
+    /**
+     * @description: 更新课程信息
+
+     * @return: 课程基本信息
+
+     */
+    CourseBaseInfoDto updateCourseBase(Long companyID, EditCourseDto editCourseDto);
+
+    void deleteCourseBase(Long companyId,Long courseID);
 }

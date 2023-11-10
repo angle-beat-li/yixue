@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * @date 2023/11/6$
  */
 @Service
-public class CourseCategoryImpl implements CourseCategoryService {
+public class CourseCategoryServiceImpl implements CourseCategoryService {
 
     @Autowired
     public CourseCategoryMapper courseCategoryMapper;

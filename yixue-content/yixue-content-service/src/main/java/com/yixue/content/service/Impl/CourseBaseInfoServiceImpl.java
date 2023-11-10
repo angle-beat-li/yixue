@@ -4,17 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yixue.base.exception.YixueException;
 import com.yixue.base.mode.PageParams;
-import com.yixue.content.mapper.CourseCategoryMapper;
-import com.yixue.content.mapper.CourseMarketMapper;
-import com.yixue.content.mode.dto.AddCourseDto;
-import com.yixue.content.mode.dto.CourseBaseInfoDto;
-import com.yixue.content.mode.dto.PageResult;
-import com.yixue.content.mode.dto.QueryCourseParamsDto;
-import com.yixue.content.mapper.CourseBaseMapper;
-import com.yixue.content.mode.po.CourseBase;
-import com.yixue.content.mode.po.CourseCategory;
-import com.yixue.content.mode.po.CourseMarket;
+import com.yixue.content.mapper.*;
+import com.yixue.content.mode.dto.*;
+import com.yixue.content.mode.po.*;
 import com.yixue.content.service.CourseBaseInfoService;
+import com.yixue.content.service.CourseTeacherService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +36,15 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
 
     @Autowired
     private CourseCategoryMapper courseCategoryMapper;
+
+    @Autowired
+    private CourseTeacherMapper courseTeacherMapper;
+
+    @Autowired
+    private TeachplanMapper teachplanMapper;
+
+    @Autowired
+    private TeachplanMediaMapper teachplanMediaMapper;
     @Override
     public PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto) {
         LambdaQueryWrapper<CourseBase> queryWrapper = new LambdaQueryWrapper<>();
@@ -134,7 +138,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
     }
 
     //返回课程基本信息
-    private CourseBaseInfoDto getCourseBaseInfo(long courseId) {
+    public CourseBaseInfoDto getCourseBaseInfo(Long courseId) {
         CourseBaseInfoDto resDto = new CourseBaseInfoDto();
         CourseBase courseBase = courseBaseMapper.selectById(courseId);
         if (courseBase ==null) {
@@ -152,4 +156,65 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         resDto.setMtName(courseCategoryByMt.getName());
         return resDto;
     }
+
+    @Override
+    @Transactional
+    public CourseBaseInfoDto updateCourseBase(Long companyId,EditCourseDto editCourseDto) {
+        Long id = editCourseDto.getId();
+        CourseBase courseBase = courseBaseMapper.selectById(id);
+        if (courseBase == null) {
+            YixueException.cast("该课程不存在");
+        }
+        if (!courseBase.getCompanyId().equals(companyId)) {
+            YixueException.cast("只能修改自己机构的课程");
+        }
+        BeanUtils.copyProperties(editCourseDto,courseBase);
+        courseBase.setCreateDate(LocalDateTime.now());
+        int courseBaseResult = courseBaseMapper.updateById(courseBase);
+        if (courseBaseResult <= 0) {
+            YixueException.cast("课程更新失败");
+        }
+        CourseMarket market = courseMarketMapper.selectById(id);
+        BeanUtils.copyProperties(editCourseDto,market);
+        int marketResult = courseMarketMapper.updateById(market);
+        if(marketResult <= 0) {
+            YixueException.cast("课程更新失败");
+        }
+        return getCourseBaseInfo(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteCourseBase(Long companyId, Long courseId) {
+        if (courseId == null) {
+            return;
+        }
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if (!courseBase.getCompanyId().equals(companyId)){
+            return;
+        }
+        //删除基本课程信息表
+        courseBaseMapper.deleteById(courseId);
+        //删除课程营销表
+        courseMarketMapper.deleteById(courseId);
+        //删除课程老师表
+        LambdaQueryWrapper<CourseTeacher> courseTeacherWrapper = new LambdaQueryWrapper<>();
+        courseTeacherWrapper.eq(CourseTeacher::getCourseId,courseId);
+        courseTeacherMapper.delete(courseTeacherWrapper);
+        //删除课程章节表
+        LambdaQueryWrapper<Teachplan> teachplanWrapper = new LambdaQueryWrapper<>();
+        teachplanWrapper.eq(Teachplan::getCourseId,courseId);
+        List<Teachplan> teachplans = teachplanMapper.selectList(teachplanWrapper);
+
+        teachplanMapper.delete(teachplanWrapper);
+        //删除课程媒体表
+        List<Long> teachplanIdList = new ArrayList<>();
+        teachplans.stream().forEach(item->{
+            teachplanIdList.add(item.getId());
+        });
+        LambdaQueryWrapper<TeachplanMedia> teachplanMediaWrapper = new LambdaQueryWrapper<>();
+        teachplanMediaWrapper.in(TeachplanMedia::getCourseId,teachplanIdList);
+        teachplanMediaMapper.delete(teachplanMediaWrapper);
+    }
+
 }

@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@Api(value = "课程分类树结构接口",tags = "课程分类树结构接口")
+@Api(value = "CourseCategoryController",tags = "课程分类树结构接口")
 @RequestMapping("/course-category")
 public class CourseCategoryController {
 

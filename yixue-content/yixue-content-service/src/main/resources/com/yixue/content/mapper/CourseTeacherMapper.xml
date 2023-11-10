@@ -13,9 +13,11 @@
         <result column="create_date" property="createDate" />
     </resultMap>
 
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, course_id, teacher_name, position, introduction, photograph, create_date
     </sql>
+
 
 </mapper>
