@@ -1,11 +1,7 @@
 package com.yixue.content;
 
-import com.yixue.base.mode.PageParams;
 import com.yixue.content.mapper.CourseCategoryMapper;
 import com.yixue.content.mode.dto.CourseCategoryTreeDto;
-import com.yixue.content.mode.dto.PageResult;
-import com.yixue.content.mode.dto.QueryCourseParamsDto;
-import com.yixue.content.mode.po.CourseBase;
 import com.yixue.content.mode.po.CourseCategory;
 import com.yixue.content.service.CourseBaseInfoService;
 import com.yixue.content.service.CourseCategoryService;
@@ -45,5 +41,12 @@ class CourseCategoryServiceTests {
     void tesCousequery(){
         CourseCategory courseCategory = categoryMapper.selectById("1");
         System.out.println(courseCategory);
+    }
+
+
+    @Test
+    void test() {
+        int x = 4;
+        System.out.println(x & -x);
     }
 }

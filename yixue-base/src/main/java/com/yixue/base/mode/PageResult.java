@@ -1,4 +1,4 @@
-package com.yixue.content.mode.dto;
+package com.yixue.base.mode;
 
 import lombok.Data;
 import lombok.ToString;

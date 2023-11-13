@@ -6,18 +6,23 @@ server:
 spring:
   application:
     name: content-api
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.101.65:3306/yx_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
-    username: root
-    password: mysql
-# 日志文件配置路径
-logging:
-  config: classpath:log4j2-dev.xml
+  cloud:
+    nacos:
+      server-addr: 47.108.252.97:8848
+      discovery:
+        namespace: yixue
+        group: yixue-project
+      config:
+        namespace: yixue
+        file-extension: yaml
+        refresh-enabled: true
+        shared-configs:
+          - data-id: logging-${spring.profiles.active}.yaml
+            group: common
+            refresh: true
+          - data-id: swagger-${spring.profiles.active}.yaml
+            group: common
+            refresh: true
+  profiles:
+    active: dev
 
-swagger:
-  title: "易学内容管理系统"
-  description: "内容系统管理系统对课程相关信息进行管理"
-  base-package: com.xuecheng.content
-  enabled: true
-  version: 1.0.0
