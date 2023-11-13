@@ -1,6 +1,7 @@
 package com.yixue.content.api;
 
 import com.yixue.base.mode.PageParams;
+import com.yixue.base.mode.PageResult;
 import com.yixue.content.mode.dto.*;
 import com.yixue.content.mode.po.CourseBase;
 import com.yixue.content.service.CourseBaseInfoService;
